@@ -1,7 +1,7 @@
 # MassimoPrag.github.io
 ### Education
-Northeastern University – Khoury School of CS, D’Amore-McKim School of Business \
-Bachelor of Science in Data Science and Business Administration \
+Northeastern University – Khoury School of CS, D’Amore-McKim School of Business <br />
+Bachelor of Science in Data Science and Business Administration <br />
 Class of 2027 \
 • Global Scholar - Oakland, California and London, UK \
 • Relevant Coursework: Advanced Programing with Data (Python), Discrete Structures, Macroeconomics,\ 
