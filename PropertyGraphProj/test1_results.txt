@@ -1,0 +1,175 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.11.10, pytest-8.3.3, pluggy-1.5.0
+rootdir: /Users/massimoprag/Desktop/Desktop - Massimo’s MacBook Air/DS3500/MassimoPragHW4DS3500
+plugins: anyio-4.6.2.post1
+collected 16 items
+
+test_propertygraph.py .....FFFFFFFFFFF                                   [100%]
+
+=================================== FAILURES ===================================
+__________________________________ test_repr ___________________________________
+
+    def test_repr():
+        testprops = {"key1":"Val1","key1":"val2"}
+        node = Node("EMY", "Person", testprops)
+>       assert repr(node) == "EMY:Person<tab>{'key1':'Val1','key1':'val2'}"
+E       assert "EMY:Person\t{'key1': 'val2'}" == "EMY:Person<t...key1':'val2'}"
+E         
+E         - EMY:Person<tab>{'key1':'Val1','key1':'val2'}
+E         + EMY:Person	{'key1': 'val2'}
+
+test_propertygraph.py:56: AssertionError
+________________________________ test_rel_init _________________________________
+
+    def test_rel_init():
+>       assert rel.category == "bought"
+E       AttributeError: 'function' object has no attribute 'category'
+
+test_propertygraph.py:66: AttributeError
+_______________________________ test_rel_getitem _______________________________
+
+    def test_rel_getitem():
+>       assert rel.props["Key1"] == "Val1"
+E       AttributeError: 'function' object has no attribute 'props'
+
+test_propertygraph.py:70: AttributeError
+_______________________________ test_rel_setitem _______________________________
+
+    def test_rel_setitem():
+>       rel["Key2"] = "Val2"
+E       TypeError: 'function' object does not support item assignment
+
+test_propertygraph.py:73: TypeError
+________________________________ test_rel_repr _________________________________
+
+    def test_rel_repr():
+>       assert repr(rel) == ":Bought<space>{'Key1':'Val1'}"
+E       assert '<function re... 0x105d3d4e0>' == ":Bought<spac...Key1':'Val1'}"
+E         
+E         - :Bought<space>{'Key1':'Val1'}
+E         + <function rel at 0x105d3d4e0>
+
+test_propertygraph.py:77: AssertionError
+_________________________________ test_gr_init _________________________________
+
+    def test_gr_init():
+>       graph = PropertyGraph({})
+E       TypeError: PropertyGraph.__init__() takes 1 positional argument but 2 were given
+
+test_propertygraph.py:84: TypeError
+_______________________________ test_gr_add_node _______________________________
+
+    def test_gr_add_node():
+        node = Node("EMY", "Person")
+>       graph = PropertyGraph({})
+E       TypeError: PropertyGraph.__init__() takes 1 positional argument but 2 were given
+
+test_propertygraph.py:89: TypeError
+___________________________ test_gr_add_relationship ___________________________
+
+    def test_gr_add_relationship():
+        src = Node("EMY", "Person")
+        rel = Relationship("Bought")
+        targ = Node("Principles","Book")
+>       graph = PropertyGraph({})
+E       TypeError: PropertyGraph.__init__() takes 1 positional argument but 2 were given
+
+test_propertygraph.py:98: TypeError
+______________________________ test_gr_get_nodes _______________________________
+
+    def test_gr_get_nodes():
+        graph = PropertyGraph()
+    
+        node1 = Node('A', 'Category1', {'key1': 'value1'})
+        node2 = Node('B', 'Category2', {'key2': 'value2'})
+        node3 = Node('C', 'Category1', {'key1': 'value3'})
+    
+        graph.add_node(node1)
+        graph.add_node(node2)
+        graph.add_node(node3)
+    
+        # Test filtering by name
+        result = graph.get_nodes(name='A')
+>       assert result == {node1}
+E       AssertionError: assert set() == {A:Category1	...1': 'value1'}}
+E         
+E         Extra items in the right set:
+E         A:Category1	{'key1': 'value1'}
+E         Use -v to get more diff
+
+test_propertygraph.py:116: AssertionError
+_______________________________ test_gr_adjacent _______________________________
+
+    def test_gr_adjacent():
+        graph = PropertyGraph()
+    
+        node1 = Node('A', 'Person')
+        node2 = Node('B', 'Book')
+        node3 = Node('C', 'Person')
+    
+        rel1 = Relationship('Friend')
+        rel2 = Relationship('Bought')
+    
+        graph.add_node(node1)
+        graph.add_node(node2)
+        graph.add_node(node3)
+    
+        graph.add_relationship(node1, node2, rel2)
+        graph.add_relationship(node1, node3, rel1)
+    
+        result = graph.adjacent(node1)
+        assert result == {node2, node3}
+    
+        result = graph.adjacent(node1, node_category='Book')
+        assert result == {node2}
+    
+        result = graph.adjacent(node1, rel_category='Friend')
+>       assert result == {node3}
+E       assert {B:Book	{}, C:Person	{}} == {C:Person	{}}
+E         
+E         Extra items in the left set:
+E         B:Book	{}
+E         Use -v to get more diff
+
+test_propertygraph.py:154: AssertionError
+_______________________________ test_gr_subgraph _______________________________
+
+    def test_gr_subgraph():
+        graph = PropertyGraph()
+    
+        node1 = Node('A', 'Person')
+        node2 = Node('B', 'Book')
+        node3 = Node('C', 'Person')
+        node4 = Node('D', 'Book')
+    
+        rel1 = Relationship('Friend')
+        rel2 = Relationship('Bought')
+    
+        graph.add_node(node1)
+        graph.add_node(node2)
+        graph.add_node(node3)
+        graph.add_node(node4)
+    
+        graph.add_relationship(node1, node2, rel2)
+        graph.add_relationship(node1, node3, rel1)
+        graph.add_relationship(node2, node4, rel1)
+    
+        sub = graph.subgraph({node1, node2, node4})
+    
+>       assert (node2, rel2) in sub.graph[node1]
+E       assert (B:Book	{}, :Bought  {}) in []
+
+test_propertygraph.py:178: AssertionError
+=========================== short test summary info ============================
+FAILED test_propertygraph.py::test_repr - assert "EMY:Person\t{'key1': 'val2'...
+FAILED test_propertygraph.py::test_rel_init - AttributeError: 'function' obje...
+FAILED test_propertygraph.py::test_rel_getitem - AttributeError: 'function' o...
+FAILED test_propertygraph.py::test_rel_setitem - TypeError: 'function' object...
+FAILED test_propertygraph.py::test_rel_repr - assert '<function re... 0x105d3...
+FAILED test_propertygraph.py::test_gr_init - TypeError: PropertyGraph.__init_...
+FAILED test_propertygraph.py::test_gr_add_node - TypeError: PropertyGraph.__i...
+FAILED test_propertygraph.py::test_gr_add_relationship - TypeError: PropertyG...
+FAILED test_propertygraph.py::test_gr_get_nodes - AssertionError: assert set() == {A:Category1	...1': 'value1'}}
+FAILED test_propertygraph.py::test_gr_adjacent - assert {B:Book	{}, C:Person	{}} == {C:Person	{}}
+FAILED test_propertygraph.py::test_gr_subgraph - assert (B:Book	{}, :Bought  {}) in []
+========================= 11 failed, 5 passed in 0.04s =========================

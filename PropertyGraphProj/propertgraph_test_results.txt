@@ -1,0 +1,99 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.11.10, pytest-8.3.3, pluggy-1.5.0
+rootdir: /Users/massimoprag/Desktop/Desktop - Massimo’s MacBook Air/DS3500/MassimoPragHW4DS3500
+plugins: anyio-4.6.2.post1
+collected 16 items
+
+test_propertygraph.py .............FFF                                   [100%]
+
+=================================== FAILURES ===================================
+______________________________ test_gr_get_nodes _______________________________
+
+    def test_gr_get_nodes():
+        graph = PropertyGraph()
+    
+        node1 = Node('A', 'Category1', {'key1': 'value1'})
+        node2 = Node('B', 'Category2', {'key2': 'value2'})
+        node3 = Node('C', 'Category1', {'key3': 'value3'})
+    
+        graph.add_node(node1)
+        graph.add_node(node2)
+        graph.add_node(node3)
+    
+        # Test filtering by name
+        result = graph.get_nodes(name='A')
+>       assert result == {node1}
+E       AssertionError: assert set() == {A:Category1	...1': 'value1'}}
+E         
+E         Extra items in the right set:
+E         A:Category1	{'key1': 'value1'}
+E         Use -v to get more diff
+
+test_propertygraph.py:116: AssertionError
+_______________________________ test_gr_adjacent _______________________________
+
+    def test_gr_adjacent():
+        graph = PropertyGraph()
+    
+        node1 = Node('A', 'Person')
+        node2 = Node('B', 'Book')
+        node3 = Node('C', 'Person')
+    
+        rel1 = Relationship('Knoows')
+        rel2 = Relationship('Bought')
+    
+        graph.add_node(node1)
+        graph.add_node(node2)
+        graph.add_node(node3)
+    
+        graph.add_relationship(node1, node2, rel2)
+        graph.add_relationship(node1, node3, rel1)
+    
+        result1 = graph.adjacent(node1)
+        assert result1 == {node2, node3}
+    
+        result2 = graph.adjacent(node1, node_category='Book')
+        assert result2 == {node2}
+    
+        result3 = graph.adjacent(node1, rel_category='Knows')
+>       assert result3 == {node3}
+E       assert set() == {C:Person	{}}
+E         
+E         Extra items in the right set:
+E         C:Person	{}
+E         Use -v to get more diff
+
+test_propertygraph.py:154: AssertionError
+_______________________________ test_gr_subgraph _______________________________
+
+    def test_gr_subgraph():
+        graph = PropertyGraph()
+    
+        node1 = Node('A', 'Person')
+        node2 = Node('B', 'Book')
+        node3 = Node('C', 'Person')
+        node4 = Node('D', 'Book')
+    
+        rel1 = Relationship('Knows')
+        rel2 = Relationship('Bought')
+    
+        graph.add_node(node1)
+        graph.add_node(node2)
+        graph.add_node(node3)
+        graph.add_node(node4)
+    
+        graph.add_relationship(node1, node2, rel2)
+        graph.add_relationship(node1, node3, rel1)
+        graph.add_relationship(node2, node4, rel1)
+    
+        sub = graph.subgraph({node1, node2, node4})
+    
+>       assert (node2, rel2) in sub.graph[node1]
+E       assert (B:Book	{}, :Bought {}) in []
+
+test_propertygraph.py:178: AssertionError
+=========================== short test summary info ============================
+FAILED test_propertygraph.py::test_gr_get_nodes - AssertionError: assert set() == {A:Category1	...1': 'value1'}}
+FAILED test_propertygraph.py::test_gr_adjacent - assert set() == {C:Person	{}}
+FAILED test_propertygraph.py::test_gr_subgraph - assert (B:Book	{}, :Bought {}) in []
+========================= 3 failed, 13 passed in 0.03s =========================
